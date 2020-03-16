@@ -13,7 +13,7 @@
           <el-input prefix-icon="el-icon-user" placeholder="请输入手机号" v-model="form.phonecode"></el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input prefix-icon="el-icon-lock" placeholder="请输入密码" v-model="form.password"></el-input>
+          <el-input prefix-icon="el-icon-lock" placeholder="请输入密码" v-model="form.password" show-password></el-input>
         </el-form-item>
         <el-form-item prop="login">
           <el-row>
@@ -33,15 +33,15 @@
           </el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-button class="btnform" type="primary" @click="register()">登录</el-button>
+          <el-button class="btnform btnformone" type="primary" @click="register">登录</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button class="btnform" type="primary">注册</el-button>
+          <el-button class="btnform" type="primary" @click="enroll">注册</el-button>
         </el-form-item>
       </el-form>
     </div>
     <img src="../../assets/login_banner_ele.png" alt />
-    <register></register>
+    <register ref="register" />
   </div>
 </template>
 
@@ -51,15 +51,25 @@ export default {
   data() {
     return {
       form: {
+        // 手机号
         phonecode: "",
+        // 密码
         password: "",
+        // 验证码
         login: "",
+        // 复选框
         type: []
       },
       rules: {
+        phonecode: [
+          { required: true, message: "请输入手机号", trigger: "blur" },
+          { min: 11, max: 11, message: "请输入11位手机号", trigger: "blur" },
+          { pattern: /^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/, message: '手机号码格式不正确' }
+        ],
         password: [
           { required: true, message: "请输入密码", trigger: "blur" },
-          { min: 5, max: 10, message: "长度在 5 到 10 个字符", trigger: "blur" }
+          { min: 5, max: 10, message: "长度在 5 到 10 个字符", trigger: "blur" },
+          { pattern: /^[a-zA-Z]\w{5,17}$/, message: '以字母开头，长度在6~18之间，只能包含字母、数字和下划线' }
         ],
         login: [
           { required: true, message: "请输入验证码", trigger: "blur" },
@@ -84,14 +94,18 @@ export default {
       this.$refs.form.validate(valid => {
         if (valid) {
           this.$message({
-            message: "恭喜你，这是一条成功消息",
+            message: "登录成功",
             type: "success"
           });
         } else {
-          this.$message.error("错了哦，这是一条错误消息");
+          this.$message.error("验证不通过");
           return false;
         }
       });
+    },
+    // 打开注册页面
+    enroll() {
+      this.$refs.register.dialogFormVisible = true;
     }
   }
 };
@@ -144,16 +158,19 @@ export default {
     }
     .login-form {
       margin-top: 29px;
-    }
-    .btnform {
-      width: 100%;
-    }
-    .el-form-item__content {
-      line-height: 25px;
-    }
-    .login-img {
-      height: 42px;
-      width: 100%;
+      .el-form-item__content {
+        line-height: 10px;
+        .login-img {
+          height: 42px;
+          width: 100%;
+        }
+        .btnform {
+          width: 100%;
+        }
+        .btnformone {
+          margin-top: 20px;
+        }
+      }
     }
   }
   img {
