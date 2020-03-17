@@ -7,11 +7,11 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(ElementUI);
 // 导入axios
-import axios from 'axios'
+// import axios from 'axios'
 // 基地址配置
-axios.defaults.baseURL = ''
+// axios.defaults.baseURL = 'http://127.0.0.1/heimamm/public'
 // axios放入Vue原型中
-Vue.prototype.$axios = axios
+// Vue.prototype.$axios = axios
 
 // 导入全局样式
 import './style/index.css'

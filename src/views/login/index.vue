@@ -13,7 +13,12 @@
           <el-input prefix-icon="el-icon-user" placeholder="请输入手机号" v-model="form.phonecode"></el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input prefix-icon="el-icon-lock" placeholder="请输入密码" v-model="form.password" show-password></el-input>
+          <el-input
+            prefix-icon="el-icon-lock"
+            placeholder="请输入密码"
+            v-model="form.password"
+            show-password
+          ></el-input>
         </el-form-item>
         <el-form-item prop="login">
           <el-row>
@@ -49,6 +54,22 @@
 import register from "./components/register";
 export default {
   data() {
+    let phonecode = (rule, value, callback) => {
+      let reg = /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/;
+      if (reg.test(value)) {
+        callback();
+      } else {
+        callback(new Error("手机号码格式不正确"));
+      }
+    };
+    let password = (rule, value, callback) => {
+      let reg = /^\w+$/;
+      if (reg.test(value)) {
+        callback();
+      } else {
+        callback(new Error("不能有特殊字符"));
+      }
+    };
     return {
       form: {
         // 手机号
@@ -64,16 +85,27 @@ export default {
         phonecode: [
           { required: true, message: "请输入手机号", trigger: "blur" },
           { min: 11, max: 11, message: "请输入11位手机号", trigger: "blur" },
-          { pattern: /^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/, message: '手机号码格式不正确' }
+          { validator: phonecode, trigger: "blur" }
+          // html5新出属性,兼容不行
+          // {
+          //   pattern: /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/,
+          //   message: "手机号码格式不正确",
+          //   trigger: "blur"
+          // }
         ],
         password: [
           { required: true, message: "请输入密码", trigger: "blur" },
-          { min: 5, max: 10, message: "长度在 5 到 10 个字符", trigger: "blur" },
-          { pattern: /^[a-zA-Z]\w{5,17}$/, message: '以字母开头，长度在6~18之间，只能包含字母、数字和下划线' }
+          {
+            min: 5,
+            max: 10,
+            message: "长度在 5 到 10 个字符",
+            trigger: "blur"
+          },
+          { validator: password, trigger: "blur" }
         ],
         login: [
           { required: true, message: "请输入验证码", trigger: "blur" },
-          { min: 4, max: 4, message: "长度为 4 个字符", trigger: "blur" }
+          { min: 4, max: 4, message: "长度为4个字符", trigger: "blur" }
         ],
         type: [
           {
