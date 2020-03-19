@@ -20,13 +20,13 @@
             show-password
           ></el-input>
         </el-form-item>
-        <el-form-item prop="login">
+        <el-form-item prop="logincode">
           <el-row>
             <el-col :span="18">
-              <el-input prefix-icon="el-icon-key" placeholder="请输入验证码" v-model="form.login"></el-input>
+              <el-input prefix-icon="el-icon-key" placeholder="请输入验证码" v-model="form.logincode"></el-input>
             </el-col>
             <el-col :span="6">
-              <img src="../../assets/login_captcha.png" class="login-img" alt />
+              <img :src="checkloginUrl" class="login-img" @click="changelogin" alt />
             </el-col>
           </el-row>
         </el-form-item>
@@ -51,25 +51,14 @@
 </template>
 
 <script>
+// 导入注册组件
 import register from "./components/register";
+// 导入登录方法
+import { loginindex } from "@/api/login.js";
+// 导入校验的方法
+import { phonecode, password } from "@/utils/mycheck.js";
 export default {
   data() {
-    let phonecode = (rule, value, callback) => {
-      let reg = /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/;
-      if (reg.test(value)) {
-        callback();
-      } else {
-        callback(new Error("手机号码格式不正确"));
-      }
-    };
-    let password = (rule, value, callback) => {
-      let reg = /^\w+$/;
-      if (reg.test(value)) {
-        callback();
-      } else {
-        callback(new Error("不能有特殊字符"));
-      }
-    };
     return {
       form: {
         // 手机号
@@ -77,7 +66,7 @@ export default {
         // 密码
         password: "",
         // 验证码
-        login: "",
+        logincode: "",
         // 复选框
         type: []
       },
@@ -103,7 +92,7 @@ export default {
           },
           { validator: password, trigger: "blur" }
         ],
-        login: [
+        logincode: [
           { required: true, message: "请输入验证码", trigger: "blur" },
           { min: 4, max: 4, message: "长度为4个字符", trigger: "blur" }
         ],
@@ -115,19 +104,31 @@ export default {
             trigger: "change"
           }
         ]
-      }
+      },
+      // 使用在线地址
+      checkloginUrl:
+        process.env.VUE_APP_URL + "/captcha?type=login&t=" + Date.now()
     };
   },
   components: {
     register
   },
   methods: {
+    // 更改验证码图片
+    changelogin() {
+      this.checkloginUrl =
+        process.env.VUE_APP_URL + "/captcha?type=login&t=" + Date.now();
+    },
+    // 登录验证
     register() {
       this.$refs.form.validate(valid => {
         if (valid) {
-          this.$message({
-            message: "登录成功",
-            type: "success"
+          loginindex({
+            phone: this.form.phonecode,
+            password: this.form.password,
+            code: this.form.logincode
+          }).then(res => {
+            window.console.log(res);
           });
         } else {
           this.$message.error("验证不通过");

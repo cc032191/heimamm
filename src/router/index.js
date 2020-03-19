@@ -11,6 +11,9 @@ const router = new VueRouter({
     routes: [{
         path: '/login',
         component: login
+    }, {
+        path: '/',
+        redirect: '/login'
     }]
 })
 export default router
