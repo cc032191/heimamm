@@ -57,14 +57,16 @@ import register from "./components/register";
 import { loginindex } from "@/api/login.js";
 // 导入校验的方法
 import { phonecode, password } from "@/utils/mycheck.js";
+// 导入token方法
+import { setToken } from "@/utils/mytoken.js";
 export default {
   data() {
     return {
       form: {
         // 手机号
-        phonecode: "",
+        phonecode: "18511111111",
         // 密码
-        password: "",
+        password: "12345678",
         // 验证码
         logincode: "",
         // 复选框
@@ -128,7 +130,14 @@ export default {
             password: this.form.password,
             code: this.form.logincode
           }).then(res => {
-            window.console.log(res);
+            // window.console.log(res);
+            if (res.data.code === 200) {
+              this.$message.success("登录成功");
+              setToken(res.data.data.token); //用自己封装的方法保存token
+              this.$router.push("./home");
+            } else {
+              this.$message.warning("帐号或者密码错误");
+            }
           });
         } else {
           this.$message.error("验证不通过");

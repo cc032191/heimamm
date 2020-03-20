@@ -163,7 +163,7 @@ export default {
             password: this.form.password,
             rcode: this.form.rcode
           }).then(res => {
-            window.console.log(res);
+            // window.console.log(res);
             if (res.data.code !== 200) {
               this.$message.warning(res.data.message);
               return;
