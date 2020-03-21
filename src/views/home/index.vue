@@ -22,24 +22,26 @@
           background-color="#fff"
           text-color="#686A6E"
           :collapse="isCollapse"
+          :collapse-transition="false"
+          :default-active="clickPathtext"
         >
-          <el-menu-item index="/chart">
+          <el-menu-item index="/chart" @click="highlight('/chart')">
             <i class="el-icon-pie-chart"></i>
             <span slot="title">数据概览</span>
           </el-menu-item>
-          <el-menu-item index="/user">
+          <el-menu-item index="/user" @click="highlight('/user')">
             <i class="el-icon-user"></i>
             <span slot="title">用户列表</span>
           </el-menu-item>
-          <el-menu-item index="/question">
+          <el-menu-item index="/question" @click="highlight('/question')">
             <i class="el-icon-document-copy"></i>
             <span slot="title">题库列表</span>
           </el-menu-item>
-          <el-menu-item index="/enterprise">
+          <el-menu-item index="/enterprise" @click="highlight('/enterprise')">
             <i class="el-icon-office-building"></i>
             <span slot="title">企业列表</span>
           </el-menu-item>
-          <el-menu-item index="/subject">
+          <el-menu-item index="/subject" @click="highlight('/subject')">
             <i class="el-icon-notebook-2"></i>
             <span slot="title">学科列表</span>
           </el-menu-item>
@@ -55,20 +57,34 @@
 
 <script>
 // 导入获取用户信息
-import { getuserinfo, logout } from "../../api/home.js";
+// import { getuserinfo } from "../../api/home.js";
+import { logout } from "../../api/home.js";
 // 导入删除token
 import { removeToken } from "../../utils/mytoken";
+// import { getToken } from "../../utils/mytoken";
+
 export default {
   data() {
     return {
+      // 当前获取到的信息
       userinfo: [],
       userimg: "",
       //   当前不折叠
-      isCollapse: false
+      isCollapse: false,
+      // 被激活的链接地址
+      clickPathtext: ""
     };
   },
+  created() {
+    // 一进入页面就赋值给default-active
+    this.clickPathtext=window.sessionStorage.getItem('Path')  
+  },
   methods: {
-    //退出删除token
+    // 当前点击的highlight高亮路径保存起来     页面的一进入的时候赋值给default-active
+    highlight(Path){
+         window.sessionStorage.setItem('Path',Path)
+    },
+    // 退出删除token
     dropout() {
       this.$confirm("确认退出吗?", "提示", {
         confirmButtonText: "确定",
@@ -98,17 +114,31 @@ export default {
           });
         });
     }
-  },
-  created() {
-    // 调用getuserinfo方法获取用户信息
-    getuserinfo().then(res => {
-      //   window.console.log(res);
-      //保存起来
-      this.userinfo = res.data.data;
-      //   头像单独保存   头像需要给基地址
-      this.userimg = process.env.VUE_APP_URL + "/" + this.userinfo.avatar;
-    });
   }
+  // 判断token写在导航守卫里面
+  // created() {
+  //   // 判断token非空   如果是空则提示未登录   返回login页面  不执行后面代码
+  //   if (!getToken()) {
+  //     this.$message.error("你没有登录,请重新登录");
+  //     this.$router.push("/login");
+  //     return;
+  //   }
+  //   // 调用getuserinfo方法获取用户信息
+  //   getuserinfo().then(res => {
+  //     // window.console.log(res);
+  //     // 判断token真假
+  //     if (res.data.code !== 200) {
+  //       this.$message.error(res.data.message);
+  //       this.$router.push("/login");
+  //       return;
+  //     } else {
+  //       //保存起来
+  //       this.userinfo = res.data.data;
+  //       //   头像单独保存   头像需要给基地址
+  //       this.userimg = process.env.VUE_APP_URL + "/" + this.userinfo.avatar;
+  //     }
+  //   });
+  // }
 };
 </script>
 
