@@ -12,6 +12,10 @@ import question from '../views/question/index.vue';
 import subject from '../views/subject/index.vue';
 import user from '../views/user/index.vue';
 import welcome from '../views/welcome/index.vue'
+
+
+// 导入store
+import store from '../store/index'
 // 导入message方法   js文件使用element-ui里面的方法   需要单独导入  另外使用格式为Message.success('')
 import {
     Message
@@ -113,8 +117,16 @@ router.beforeEach((to, from, next) => {
         } else {
             // 判断token是否为真
             getuserinfo().then(res => {
+                // window.console.log(res)
                 if (res.data.code === 200) {
                     // 等于200则放行   开启进度条
+                    let userInfo = {
+                        username: res.data.data.username,
+                        userimg: process.env.VUE_APP_URL + "/" + res.data.data.avatar
+                    }
+                    // 调用mutations中的方法
+                    store.commit('changeuser', userInfo)
+
                     NProgress.start();
                     next()
                 } else if (res.data.code === 206) {

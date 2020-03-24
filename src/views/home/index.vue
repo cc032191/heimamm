@@ -8,8 +8,8 @@
         <span>黑马面面</span>
       </div>
       <div class="right">
-        <img :src="userimg" alt />
-        <span class="spanp">{{userinfo.username}},你好</span>
+        <img :src='$store.state.userimg' alt />
+        <span class="spanp">{{$store.state.username}},你好</span>
         <el-button class="btn" type="primary" @click="dropout">退出</el-button>
       </div>
     </el-header>

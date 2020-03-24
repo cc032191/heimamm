@@ -16,6 +16,9 @@ Vue.use(ElementUI);
 // 导入全局样式
 import './style/index.css'
 
+// 导入store
+import store from './store/index.js'
+
 
 // 防止同路由点击报错
 // const routerPush = VueRouter.prototype.push
@@ -27,5 +30,8 @@ Vue.config.productionTip = false
 
 new Vue({
   render: h => h(App),
-  router
+  // 挂载router
+  router,
+  // 挂载store
+  store
 }).$mount('#app')

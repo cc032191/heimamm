@@ -13,7 +13,7 @@ let instance = axios.create({
     withCredentials: true
 })
 
-// 封装用户信息的接口
+// 封装获取用户信息的接口
 export function getuserinfo() {
     return instance({
         url: '/info',
