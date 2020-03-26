@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { apiaddenterprise } from "../../../api/enterprise";
+import { apiaddent } from "../../../api/enterprise";
 export default {
   data() {
     return {

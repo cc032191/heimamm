@@ -1,7 +1,7 @@
 // 用来封装企业列表的网络请求的方法
 import instance from '../utils/myaxios'
 // 获取企业列表信息接口
-export function apigetenterpriselist({
+export function apigetent({
     name,
     page,
     limit,
@@ -41,7 +41,7 @@ export function apicreatestatus({
     })
 }
 // 新增企业
-export function apiaddenterprise({
+export function apiaddent({
     eid,
     name,
     short_name,
@@ -64,7 +64,7 @@ export function apiaddenterprise({
     })
 }
 // 删除企业
-export function apiremoveenterprise({
+export function apiremoveent({
     id
 }) {
     return instance({
@@ -79,7 +79,7 @@ export function apiremoveenterprise({
     })
 }
 // 编辑企业
-export function apicompileenterprise({
+export function apicompileent({
     tag,
     name,
     short_name,

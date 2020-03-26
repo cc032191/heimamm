@@ -30,10 +30,7 @@
 </template>
 
 <script>
-import {
-  apicompileenterprise,
-  apiaddenterprise
-} from "../../../api/enterprise";
+import { apicompileent, apiaddent } from "../../../api/enterprise";
 export default {
   data() {
     return {
