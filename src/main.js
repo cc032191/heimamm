@@ -19,6 +19,10 @@ import './style/index.css'
 // 导入store
 import store from './store/index.js'
 
+// 导入全局filter
+// 导入日期处理
+import './filters/timeFilter.js';
+
 
 // 防止同路由点击报错
 // const routerPush = VueRouter.prototype.push

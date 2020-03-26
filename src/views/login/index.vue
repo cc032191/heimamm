@@ -130,7 +130,7 @@ export default {
             password: this.form.password,
             code: this.form.logincode
           }).then(res => {
-            window.console.log(res);
+            // window.console.log(res);
             if (res.data.code === 200) {
               this.$message.success("登录成功");
               setToken(res.data.data.token); //用自己封装的方法保存token

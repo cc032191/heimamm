@@ -20,7 +20,7 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="getlist()">搜索</el-button>
+          <el-button type="primary" @click="getList">搜索</el-button>
           <el-button @click="cleardata">清除</el-button>
           <el-button type="primary" @click="addsubject">
             <i class="el-icon-plus"></i>&nbsp;新增学科
@@ -36,7 +36,9 @@
         <el-table-column prop="name" label="学科名称"></el-table-column>
         <el-table-column prop="short_name" label="简称"></el-table-column>
         <el-table-column prop="username" label="创建者"></el-table-column>
-        <el-table-column prop="create_time" label="创建日期"></el-table-column>
+        <el-table-column prop="create_time" label="创建日期">
+          <template slot-scope="scope">{{scope.row.create_time|data}}</template>
+        </el-table-column>
         <el-table-column label="状态">
           <!-- 自定义 -->
           <template slot-scope="scope">
@@ -127,6 +129,10 @@ export default {
         }
       });
     },
+    // 搜索
+    getList() {
+      this.getlist();
+    },
     // 改变状态
     changestate(id, status) {
       // window.console.log(id);
@@ -157,7 +163,10 @@ export default {
     // 编辑学科
     compilesuBject(row) {
       this.$refs.compile.centerDialogVisible = true;
-      this.$refs.compile.compilelist = JSON.parse(JSON.stringify(row));
+      // 编辑的状态保存
+      if (row.id !== this.$refs.compile.compilelist.id) {
+        this.$refs.compile.compilelist = JSON.parse(JSON.stringify(row));
+      }
       // window.console.log(row);
     },
     // 删除学科
@@ -171,6 +180,10 @@ export default {
           removesuBject({ id }).then(res => {
             // window.console.log(res);
             if (res.data.code === 200) {
+              // 处理最后一页页码显示问题
+              if (this.subjectlist.length === 1) {
+                this.pagenum -= 1;
+              }
               this.getlist();
               this.$message.success("删除成功");
             }

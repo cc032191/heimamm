@@ -4,7 +4,6 @@
     :visible.sync="centerDialogVisible"
     width="30%"
     center
-    @close="closereset"
   >
     <el-form :model="compilelist" :rules="rules" ref="ruleForm" label-width="80px">
       <el-form-item label="学科编号" prop="rid">
@@ -58,10 +57,6 @@ export default {
     };
   },
   methods: {
-    // 表格关闭重置
-    closereset() {
-      this.$refs.ruleForm.resetFields();
-    },
     edit() {
       this.$refs.ruleForm.validate(valid => {
         if (valid) {

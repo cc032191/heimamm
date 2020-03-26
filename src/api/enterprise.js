@@ -1,17 +1,16 @@
-// 用来封装用户列表的网络请求的方法
+// 用来封装企业列表的网络请求的方法
 import instance from '../utils/myaxios'
-
-// 获取学科列表信息接口
-export function getsubjectlist({
+// 获取企业列表信息接口
+export function apigetenterpriselist({
     name,
     page,
     limit,
-    rid,
+    eid,
     username,
     status
 }) {
     return instance({
-        url: '/subject/list',
+        url: '/enterprise/list',
         // get请求可以省略不写
         // headers: {
         //     token: getToken()
@@ -20,45 +19,43 @@ export function getsubjectlist({
             name,
             page,
             limit,
-            rid,
+            eid,
             username,
             status
         }
     })
 }
 // 改变状态值
-export function createstatus({
-    id,
-    status
+export function apicreatestatus({
+    id
 }) {
     return instance({
-        url: '/subject/status',
+        url: '/enterprise/status',
         method: 'POST',
         // headers: {
         //     token: getToken()
         // },
         data: {
-            id,
-            status
+            id
         }
     })
 }
-// 新增学科
-export function addsuBject({
-    rid,
+// 新增企业
+export function apiaddenterprise({
+    eid,
     name,
     short_name,
     intro,
     remark
 }) {
     return instance({
-        url: '/subject/add',
+        url: '/enterprise/add',
         method: 'POST',
         // headers: {
         //     token: getToken()
         // },
         data: {
-            rid,
+            eid,
             name,
             short_name,
             intro,
@@ -66,12 +63,12 @@ export function addsuBject({
         }
     })
 }
-// 删除学科
-export function removesuBject({
+// 删除企业
+export function apiremoveenterprise({
     id
 }) {
     return instance({
-        url: '/subject/remove',
+        url: '/enterprise/remove',
         method: 'POST',
         // headers: {
         //     token: getToken()
@@ -81,25 +78,27 @@ export function removesuBject({
         }
     })
 }
-// 编辑学科
-export function compilesuBject({
-    rid,
+// 编辑企业
+export function apicompileenterprise({
+    tag,
     name,
     short_name,
     intro,
     remark,
-    id
+    id,
+    eid
 }) {
     return instance({
-        url: '/subject/edit',
+        url: '/enterprise/edit',
         method: 'POST',
         data: {
-            rid,
+            tag,
             name,
             short_name,
             intro,
             remark,
-            id
+            id,
+            eid //必须传入   后台bug
         }
     })
 }
