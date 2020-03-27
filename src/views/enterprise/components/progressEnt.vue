@@ -64,7 +64,7 @@ export default {
         // 处理编辑页面
         this.$refs.ruleForm.validate(valid => {
           if (valid) {
-            apicompileenterprise(this.from).then(res => {
+            apicompileent(this.from).then(res => {
               if (res.data.code === 201) {
                 this.$message.error(res.data.message);
               } else if (res.data.code === 200) {
@@ -82,7 +82,7 @@ export default {
         // 处理新增页面
         this.$refs.ruleForm.validate(valid => {
           if (valid) {
-            apiaddenterprise(this.from).then(res => {
+            apiaddent(this.from).then(res => {
               // window.console.log(res);
               if (res.data.code === 200) {
                 this.$message.success("新增成功");

@@ -8,7 +8,7 @@
         <span>黑马面面</span>
       </div>
       <div class="right">
-        <img :src='$store.state.userimg' alt />
+        <img :src="$store.state.userimg" alt />
         <span class="spanp">{{$store.state.username}},你好</span>
         <el-button class="btn" type="primary" @click="dropout">退出</el-button>
       </div>
@@ -25,7 +25,19 @@
           :collapse-transition="false"
           :default-active="clickPathtext"
         >
-          <el-menu-item index="/chart" @click="highlight('/chart')">
+          <!-- 渲染 -->
+          <template v-for="(item, index) in child">
+            <el-menu-item
+              :key="index"
+              v-if="item.meta.roles.includes($store.state.role)"
+              :index="item.path"
+              @click="highlight(item.path)"
+            >
+              <i :class="usericon[item.meta.id]"></i>
+              <span slot="title">{{item.meta.title}}</span>
+            </el-menu-item>
+          </template>
+          <!-- <el-menu-item index="/chart" @click="highlight('/chart')">
             <i class="el-icon-pie-chart"></i>
             <span slot="title">数据概览</span>
           </el-menu-item>
@@ -44,7 +56,7 @@
           <el-menu-item index="/subject" @click="highlight('/subject')">
             <i class="el-icon-notebook-2"></i>
             <span slot="title">学科列表</span>
-          </el-menu-item>
+          </el-menu-item>-->
         </el-menu>
       </el-aside>
       <!-- 主体内容 -->
@@ -62,7 +74,8 @@ import { logout } from "../../api/home.js";
 // 导入删除token
 import { removeToken } from "../../utils/mytoken";
 // import { getToken } from "../../utils/mytoken";
-
+// 导入子路由
+import child from "../../router/childRouter.js";
 export default {
   data() {
     return {
@@ -72,17 +85,28 @@ export default {
       //   当前不折叠
       isCollapse: false,
       // 被激活的链接地址
-      clickPathtext: ""
+      clickPathtext: "",
+      // 生成导航的数据源
+      child: child,
+      // 图标的对象
+      usericon: {
+        "1": "el-icon-s-home",
+        "2": "el-icon-pie-chart",
+        "3": "el-icon-user",
+        "4": "el-icon-document-copy",
+        "5": "el-icon-office-building",
+        "6": "el-icon-notebook-2"
+      }
     };
   },
   created() {
     // 一进入页面就赋值给default-active
-    this.clickPathtext=window.sessionStorage.getItem('Path')  
+    this.clickPathtext = window.sessionStorage.getItem("Path");
   },
   methods: {
     // 当前点击的highlight高亮路径保存起来     页面的一进入的时候赋值给default-active
-    highlight(Path){
-         window.sessionStorage.setItem('Path',Path)
+    highlight(Path) {
+      window.sessionStorage.setItem("Path", Path);
     },
     // 退出删除token
     dropout() {

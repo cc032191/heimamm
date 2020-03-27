@@ -5,13 +5,8 @@ import VueRouter from 'vue-router'
 import login from '../views/login/index.vue'
 // 导入主页
 import home from '@/views/home/index.vue'
-// 导入主内容区域组件
-import chart from '../views/chart/index.vue'
-import enterprise from '../views/enterprise/index.vue';
-import question from '../views/question/index.vue';
-import subject from '../views/subject/index.vue';
-import user from '../views/user/index.vue';
-import welcome from '../views/welcome/index.vue'
+// 导入chiild
+import child from './childRouter.js'
 
 
 // 导入store
@@ -35,57 +30,21 @@ const router = new VueRouter({
     //这里就是路由的配制项
     routes: [{
         path: '/login',
-        component: login
+        component: login,
+        meta: {
+            roles: ['超级管理员', '管理员', '老师', '学生']
+        }
     }, {
         path: '/',
         redirect: '/login'
     }, {
         path: '/home',
         component: home,
+        meta: {
+            roles: ['超级管理员', '管理员', '老师', '学生']
+        },
         redirect: '/welcome',
-        children: [{
-                path: '/chart',
-                component: chart,
-                meta: {
-                    title: '数据概览'
-                }
-            },
-            {
-                path: '/enterprise',
-                component: enterprise,
-                meta: {
-                    title: '数据概览'
-                }
-            },
-            {
-                path: '/question',
-                component: question,
-                meta: {
-                    title: '题库列表'
-                }
-            },
-            {
-                path: '/subject',
-                component: subject,
-                meta: {
-                    title: '学科列表'
-                }
-            },
-            {
-                path: '/user',
-                component: user,
-                meta: {
-                    title: '用户列表'
-                }
-            },
-            {
-                path: '/welcome',
-                component: welcome,
-                meta: {
-                    title: 'welcome'
-                }
-            }
-        ]
+        children: child
 
     }]
 })
@@ -118,22 +77,38 @@ router.beforeEach((to, from, next) => {
             // 判断token是否为真
             getuserinfo().then(res => {
                 // window.console.log(res)
-                if (res.data.code === 200) {
-                    // 等于200则放行   开启进度条
-                    let userInfo = {
-                        username: res.data.data.username,
-                        userimg: process.env.VUE_APP_URL + "/" + res.data.data.avatar
+                // 判断status,判断其状态值    1为有权限可以登录    0为没有权限不能登录
+                if (res.data.data.status === 0) {
+                    Message.error('你没有登录权限,请联系管理员')
+                } else {
+                    if (res.data.code === 200) {
+                        // 等于200则放行   开启进度条
+                        let userInfo = {
+                            username: res.data.data.username,
+                            userimg: process.env.VUE_APP_URL + "/" + res.data.data.avatar
+                        }
+                        // 调用mutations中的方法
+                        store.commit('changeuser', userInfo)
+                        // 获取到当前登录信息的用户角色
+                        const role = res.data.data.role
+                        // 把当前保存的用户角色放到store里面
+                        store.commit('setRole', role)
+                        NProgress.start();
+                        next()
+                        // 判断当前用户角色是否属于本路由的roles
+                        // if (to.meta.roles.includes(role)) {
+                        //     // 有则表示可以访问
+                        //     NProgress.start();
+                        //     next()
+                        // } else {
+                        //     Message.error('对不起,你不能访问此页面')
+                        // }
+                    } else if (res.data.code === 206) {
+                        // 不等于200则表示token错误
+                        window.console.log(res.data.message)
+                        Message.error('你还没有登录');
+                        next("/login");
                     }
-                    // 调用mutations中的方法
-                    store.commit('changeuser', userInfo)
-
-                    NProgress.start();
-                    next()
-                } else if (res.data.code === 206) {
-                    // 不等于200则表示token错误
-                    window.console.log(res.data.message)
-                    Message.error('你还没有登录');
-                    next("/login");
                 }
             })
         }

@@ -8,7 +8,8 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
     state: {
         username: '',
-        userimg: ''
+        userimg: '',
+        role: ''
     },
     mutations: {
         // 定义一个设置用户信息的方法
@@ -16,6 +17,9 @@ const store = new Vuex.Store({
             state.username = payload.username
             state.userimg = payload.userimg
 
+        },
+        setRole: function (state, payload) {
+            state.role = payload
         }
     }
 })

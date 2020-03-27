@@ -124,9 +124,13 @@ export default {
       // 整合页面
       this.$refs.progressEnt.titleIs = true;
       this.$refs.progressEnt.centerDialogVisible = true;
-      if (this.$refs.progressEnt.from.id !== "") {
+      this.$refs.progressEnt.nextTick(() => {
         this.$refs.progressEnt.$refs.ruleForm.resetFields();
-      }
+      });
+
+      // if (this.$refs.progressEnt.from.id !== "") {
+      //   this.$refs.progressEnt.$refs.ruleForm.resetFields();
+      // }
     },
     // 编辑
     compileent(row) {
