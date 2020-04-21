@@ -21,4 +21,4 @@ export function getToken() {
 //删除token
 export function removeToken() {
     window.localStorage.removeItem(TOKEN_KEN)
-};
+}

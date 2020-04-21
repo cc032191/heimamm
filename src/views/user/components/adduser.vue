@@ -44,7 +44,7 @@
 import { adduser } from "@/api/user.js";
 import { verifyemall, phonecodetest } from "../../../utils/mycheck";
 export default {
-  data() {
+  data () {
     return {
       // 弹框开关
       centerDialogVisible: false,
@@ -74,7 +74,7 @@ export default {
     };
   },
   methods: {
-    addUser() {
+    addUser () {
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
           adduser(this.from).then(res => {
@@ -92,7 +92,7 @@ export default {
         }
       });
     },
-    removelist() {
+    removelist () {
       this.$refs.ruleForm.resetFields();
     }
   }

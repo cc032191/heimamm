@@ -32,7 +32,7 @@
 <script>
 import { apicompileent, apiaddent } from "../../../api/enterprise";
 export default {
-  data() {
+  data () {
     return {
       // 弹框开关
       centerDialogVisible: false,
@@ -59,7 +59,7 @@ export default {
     };
   },
   methods: {
-    getEnt() {
+    getEnt () {
       if (this.titleIs === false) {
         // 处理编辑页面
         this.$refs.ruleForm.validate(valid => {

@@ -1,10 +1,5 @@
 <template>
-  <el-dialog
-    title="编辑学科"
-    :visible.sync="centerDialogVisible"
-    width="30%"
-    center
-  >
+  <el-dialog title="编辑学科" :visible.sync="centerDialogVisible" width="30%" center>
     <el-form :model="compilelist" :rules="rules" ref="ruleForm" label-width="80px">
       <el-form-item label="学科编号" prop="rid">
         <el-input v-model="compilelist.rid"></el-input>
@@ -37,7 +32,7 @@
 <script>
 import { compilesuBject } from "../../../api/subject";
 export default {
-  data() {
+  data () {
     return {
       // 弹框开关
       centerDialogVisible: false,
@@ -57,7 +52,7 @@ export default {
     };
   },
   methods: {
-    edit() {
+    edit () {
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
           compilesuBject(this.compilelist).then(res => {

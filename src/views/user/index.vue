@@ -72,7 +72,7 @@ import { getuser, alteruser, removeuser } from "@/api/user.js";
 import adduser from "./components/adduser";
 import edituser from "./components/edituser";
 export default {
-  data() {
+  data () {
     return {
       formUser: {
         username: "",
@@ -92,11 +92,11 @@ export default {
     adduser,
     edituser
   },
-  created() {
+  created () {
     this.getuserlist();
   },
   methods: {
-    getuserlist() {
+    getuserlist () {
       getuser({
         username: this.formUser.username,
         email: this.formUser.email,
@@ -114,11 +114,11 @@ export default {
       });
     },
     // 清除
-    clean() {
+    clean () {
       this.$refs.formUser.resetFields();
     },
     // 切换状态
-    switchover(row) {
+    switchover (row) {
       alteruser({ id: row.id }).then(res => {
         // window.console.log(res);
         if (res.data.code === 200) {
@@ -132,7 +132,7 @@ export default {
       });
     },
     // 删除
-    remove(id) {
+    remove (id) {
       this.$confirm("你确定要删除吗?", "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -161,11 +161,11 @@ export default {
         });
     },
     // 新增
-    add() {
+    add () {
       this.$refs.adduser.centerDialogVisible = true;
     },
     // 编辑
-    edit(row) {
+    edit (row) {
       // window.console.log(row)
       this.$refs.edituser.centerDialogVisible = true;
       if (row.id !== this.$refs.edituser.from.id) {
@@ -175,13 +175,13 @@ export default {
       }
     },
     // 每页多少条
-    handleSizeChange(newpagesize) {
+    handleSizeChange (newpagesize) {
       // window.console.log(newpagesize);
       this.pagesize = newpagesize;
       this.getuserlist();
     },
     // 当前显示页码
-    handleCurrentChange(newpagenum) {
+    handleCurrentChange (newpagenum) {
       this.pagenum = newpagenum;
       this.getuserlist();
     }
@@ -189,7 +189,7 @@ export default {
 };
 </script>
 
-<style lang='less'>
+<style lang='less' scoped>
 .twocard {
   margin-top: 18px;
 }

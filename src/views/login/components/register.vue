@@ -71,7 +71,7 @@ import {
   graphiccodetest
 } from "@/utils/mycheck.js";
 export default {
-  data() {
+  data () {
     return {
       form: {
         // 昵称
@@ -143,7 +143,7 @@ export default {
   },
   methods: {
     // 重置表单
-    cancle() {
+    cancle () {
       // 得到 form 组件元素，用且调用 resetFields
       this.$refs.form.resetFields();
       // 手动清除图片
@@ -151,7 +151,7 @@ export default {
       // 关闭面板
       this.dialogFormVisible = false;
     },
-    registerLogin() {
+    registerLogin () {
       // 验证表单
       this.$refs.form.validate(valid => {
         if (valid) {
@@ -183,13 +183,13 @@ export default {
         }
       });
     },
-    changeurl() {
+    changeurl () {
       // 点击验证码改变图片地址
       this.graphiccodeUrl =
         process.env.VUE_APP_URL + "/captcha?type=sendsms&t=" + +new Date();
     },
     // 获取验证码
-    getauthcode() {
+    getauthcode () {
       // 获取验证码的时候确认手机号没有错误
       let reg = /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/;
       // window.console.log(reg.test(this.form.phonecode));
@@ -250,7 +250,7 @@ export default {
       //   });
     },
     // 头像上传成功之后  res服务器返回的对象   file上传的文件
-    handleAvatarSuccess(res, file) {
+    handleAvatarSuccess (res, file) {
       // console.log(res); //返回的数据
       // console.log(file); //上传的图像对象
       this.imageUrl = URL.createObjectURL(file.raw);
@@ -260,7 +260,7 @@ export default {
       this.$refs.form.validateField("avatar");
     },
     // 头像上传之前
-    beforeAvatarUpload(file) {
+    beforeAvatarUpload (file) {
       // file  上传的图片对象
       const isJPG = file.type === "image/jpeg" || "image/png" || "image/gif"; //判断文件类型
       const isLt2M = file.size / 1024 / 1024 < 2; //判断文件大小

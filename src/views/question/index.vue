@@ -5,14 +5,17 @@
         <el-row>
           <el-col>
             <el-form-item label="学科" prop="subject">
-              <el-select v-model="formque.subject" placeholder="请选择学科">
+              <subjectcom v-model="formque.subject"></subjectcom>
+              <!-- <subjectcom :value="formque.subject" @input="changesubject"></subjectcom> -->
+              <!-- 因为其他面板会用到,所以抽取单独组件 -->
+              <!-- <el-select v-model="formque.subject" placeholder="请选择学科">
                 <el-option
                   v-for="(item, index) in subjectlist"
                   :key="index"
                   :label="item.name"
                   :value="item.id"
                 ></el-option>
-              </el-select>
+              </el-select>-->
             </el-form-item>
             <el-form-item label="阶段" prop="step">
               <el-select v-model="formque.step" placeholder="请选择阶段">
@@ -22,14 +25,16 @@
               </el-select>
             </el-form-item>
             <el-form-item label="企业" prop="enterprise">
-              <el-select v-model="formque.enterprise" placeholder="请选择企业">
+              <!-- 企业列表封装为一个组件 -->
+              <entcom v-model="formque.enterprise"></entcom>
+              <!-- <el-select v-model="formque.enterprise" placeholder="请选择企业">
                 <el-option
                   v-for="(item, index) in entlist"
                   :key="index"
                   :label="item.name"
                   :value="item.id"
                 ></el-option>
-              </el-select>
+              </el-select>-->
             </el-form-item>
             <el-form-item label="题型" prop="type">
               <el-select v-model="formque.type" placeholder="请选择题型">
@@ -74,7 +79,7 @@
         <el-button type="primary" @click="getquelist()">搜索</el-button>
         <el-button @click="clear">清除</el-button>
         <el-button type="primary" @click="addque">
-          <i class="el-icon-plus"></i>&nbsp;新增用户
+          <i class="el-icon-plus"></i>&nbsp;新增试题
         </el-button>
       </el-form>
     </el-card>
@@ -134,15 +139,21 @@
         background
       ></el-pagination>
     </el-card>
+    <!--  新增页面 -->
+    <addques ref="addques"></addques>
+    <!-- 编辑页面 -->
+    <editques ref="editques"></editques>
   </div>
 </template>
 
 <script>
 import { apigetque, apialterque, removeque } from "../../api/question";
-import { getsubjectlist } from "../../api/subject";
-import { apigetent } from "../../api/enterprise";
+// import { getsubjectlist } from "../../api/subject";
+// import { apigetent } from "../../api/enterprise";
+import addques from "./components/addques";
+import editques from "./components/editques";
 export default {
-  data() {
+  data () {
     return {
       formque: {
         title: "",
@@ -168,25 +179,39 @@ export default {
       quelist: []
     };
   },
-  created() {
+  components: {
+    // subjectcom,
+    // ent
+    addques,
+    editques
+  },
+  created () {
     this.getquelist();
-    this.getsubject();
-    this.getent();
+    // this.getsubject();
+    // this.getent();
   },
   methods: {
+    // // 企业
+    // changeent(value) {
+    //   this.formque.enterprise = value;
+    // },
+    // // 学科
+    // changesubject(value) {
+    //   this.formque.subject = value;
+    // },
     // 每页多少条
-    handleSizeChange(newpagesize) {
+    handleSizeChange (newpagesize) {
       // window.console.log(newpagesize);
       this.limit = newpagesize;
       this.getquelist();
     },
     // 当前显示页码
-    handleCurrentChange(newpagenum) {
+    handleCurrentChange (newpagenum) {
       this.page = newpagenum;
       this.getquelist();
     },
     // 题目列表
-    getquelist() {
+    getquelist () {
       apigetque({
         title: this.formque.title,
         subject: this.formque.subject,
@@ -200,7 +225,7 @@ export default {
         page: this.page,
         limit: this.limit
       }).then(res => {
-        window.console.log(res);
+        // window.console.log(res);
         if (res.data.code === 200) {
           this.quelist = res.data.data.items;
           this.total = res.data.data.pagination.total;
@@ -208,33 +233,38 @@ export default {
       });
     },
     // 学科列表
-    getsubject() {
-      getsubjectlist({}).then(res => {
-        // window.console.log(res);
-        if (res.data.code === 200) {
-          this.subjectlist = res.data.data.items;
-        }
-      });
-    },
+    // getsubject() {
+    //   getsubjectlist({}).then(res => {
+    //     // window.console.log(res);
+    //     if (res.data.code === 200) {
+    //       this.subjectlist = res.data.data.items;
+    //     }
+    //   });
+    // },
     // 企业列表
-    getent() {
-      apigetent({}).then(res => {
-        // window.console.log(res);
-        if (res.data.code === 200) {
-          this.entlist = res.data.data.items;
-        }
-      });
-    },
+    // getent() {
+    //   apigetent({}).then(res => {
+    //     // window.console.log(res);
+    //     if (res.data.code === 200) {
+    //       this.entlist = res.data.data.items;
+    //     }
+    //   });
+    // },
     // 清除
-    clear() {
+    clear () {
       this.$refs.formque.resetFields();
     },
     // 新增
-    addque() {},
+    addque () {
+      this.$refs.addques.dialogFormVisible = true;
+    },
     // 编辑
-    compileque() {},
+    compileque (row) {
+      this.$refs.editques.addform = row;
+      this.$refs.editques.dialogFormVisible = true;
+    },
     // 改变状态
-    changestate(row) {
+    changestate (row) {
       apialterque({ id: row.id }).then(res => {
         // window.console.log(res);
         if (res.data.code === 200) {
@@ -248,7 +278,7 @@ export default {
       });
     },
     // 删除
-    removeque(id) {
+    removeque (id) {
       this.$confirm("你确定要删除吗?", "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -280,7 +310,7 @@ export default {
 };
 </script>
 
-<style lang='less'>
+<style lang='less' scoped>
 .el-form-item {
   .el-form-item__label {
     padding: 0 20px 0 15px;

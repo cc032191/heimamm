@@ -1,11 +1,6 @@
 <template>
   <div>
-    <el-dialog
-      title="编辑用户"
-      :visible.sync="centerDialogVisible"
-      width="30%"
-      center
-    >
+    <el-dialog title="编辑用户" :visible.sync="centerDialogVisible" width="30%" center>
       <el-form :model="from" :rules="rules" ref="ruleForm" label-width="80px">
         <el-form-item label="用户名" prop="username">
           <el-input v-model="from.username"></el-input>
@@ -45,7 +40,7 @@
 import { edituser } from "@/api/user.js";
 import { verifyemall, phonecodetest } from "../../../utils/mycheck";
 export default {
-  data() {
+  data () {
     return {
       // 弹框开关
       centerDialogVisible: false,
@@ -60,7 +55,7 @@ export default {
         status: "",
         role_id: ""
       },
-      rules: {  
+      rules: {
         username: [
           { required: true, message: "请输入用户名", trigger: "blur" }
         ],
@@ -77,7 +72,7 @@ export default {
     };
   },
   methods: {
-    addUser() {
+    addUser () {
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
           edituser(this.from).then(res => {

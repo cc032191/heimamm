@@ -23,7 +23,7 @@
           text-color="#686A6E"
           :collapse="isCollapse"
           :collapse-transition="false"
-          :default-active="clickPathtext"
+          :default-active="$route.path"
         >
           <!-- 渲染 -->
           <template v-for="(item, index) in child">
@@ -31,7 +31,6 @@
               :key="index"
               v-if="item.meta.roles.includes($store.state.role)"
               :index="item.path"
-              @click="highlight(item.path)"
             >
               <i :class="usericon[item.meta.id]"></i>
               <span slot="title">{{item.meta.title}}</span>
@@ -77,15 +76,13 @@ import { removeToken } from "../../utils/mytoken";
 // 导入子路由
 import child from "../../router/childRouter.js";
 export default {
-  data() {
+  data () {
     return {
       // 当前获取到的信息
-      userinfo: [],
-      userimg: "",
+      // userinfo: [],
+      // userimg: "",
       //   当前不折叠
       isCollapse: false,
-      // 被激活的链接地址
-      clickPathtext: "",
       // 生成导航的数据源
       child: child,
       // 图标的对象
@@ -99,17 +96,9 @@ export default {
       }
     };
   },
-  created() {
-    // 一进入页面就赋值给default-active
-    this.clickPathtext = window.sessionStorage.getItem("Path");
-  },
   methods: {
-    // 当前点击的highlight高亮路径保存起来     页面的一进入的时候赋值给default-active
-    highlight(Path) {
-      window.sessionStorage.setItem("Path", Path);
-    },
     // 退出删除token
-    dropout() {
+    dropout () {
       this.$confirm("确认退出吗?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",

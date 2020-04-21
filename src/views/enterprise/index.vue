@@ -82,7 +82,7 @@ import { apigetent, apicreatestatus, apiremoveent } from "../../api/enterprise";
 // import compileenterprise from "./components/compileenterprise";
 import progressEnt from "./components/progressEnt";
 export default {
-  data() {
+  data () {
     return {
       forment: {
         eid: "",
@@ -106,34 +106,31 @@ export default {
     // addenterprise,
     // compileenterprise
   },
-  created() {
+  created () {
     this.getenterprise();
   },
   methods: {
     // 搜索
-    getent() {
+    getent () {
       this.getenterprise();
     },
     // 清空
-    cleardata() {
+    cleardata () {
       this.$refs.enterprise.resetFields();
     },
     // 新增
-    addent() {
+    addent () {
       // this.$refs.addenterprise.centerDialogVisible = true;
       // 整合页面
       this.$refs.progressEnt.titleIs = true;
       this.$refs.progressEnt.centerDialogVisible = true;
-      this.$refs.progressEnt.nextTick(() => {
+      // this.$refs.progressEnt.$refs.ruleForm.resetFields();
+      if (this.$refs.progressEnt.from.id !== "") {
         this.$refs.progressEnt.$refs.ruleForm.resetFields();
-      });
-
-      // if (this.$refs.progressEnt.from.id !== "") {
-      //   this.$refs.progressEnt.$refs.ruleForm.resetFields();
-      // }
+      }
     },
     // 编辑
-    compileent(row) {
+    compileent (row) {
       // window.console.log(row);
       // if (row.id !== this.$refs.compileenterprise.enterpriselist.id) {
       //   this.$refs.compileenterprise.enterpriselist = JSON.parse(
@@ -144,13 +141,13 @@ export default {
       // 整合页面
       this.$refs.progressEnt.titleIs = false;
       this.$refs.progressEnt.centerDialogVisible = true;
-      // if (row.id !== this.$refs.progressEnt.from.id) {
-      this.$refs.progressEnt.from = JSON.parse(JSON.stringify(row));
-      // }
+      this.$refs.progressEnt.$nextTick(() => {
+        this.$refs.progressEnt.from = JSON.parse(JSON.stringify(row));
+      });
     },
 
     // 得到数据
-    getenterprise() {
+    getenterprise () {
       apigetent({
         name: this.forment.name,
         page: this.pagenum,
@@ -169,7 +166,7 @@ export default {
       });
     },
     // 改变状态
-    changestate(row) {
+    changestate (row) {
       apicreatestatus({ id: row.id }).then(res => {
         // window.console.log(res);
         if (res.data.code === 200) {
@@ -183,7 +180,7 @@ export default {
       });
     },
     // 删除
-    removeent(id) {
+    removeent (id) {
       this.$confirm("你确定要删除吗?", "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -212,13 +209,13 @@ export default {
         });
     },
     // 每页多少条
-    handleSizeChange(newpagesize) {
+    handleSizeChange (newpagesize) {
       // window.console.log(newpagesize);
       this.pagesize = newpagesize;
       this.getenterprise();
     },
     // 当前显示页码
-    handleCurrentChange(newpagenum) {
+    handleCurrentChange (newpagenum) {
       this.pagenum = newpagenum;
       this.getenterprise();
     }

@@ -24,6 +24,26 @@ import store from './store/index.js'
 import './filters/timeFilter.js';
 
 
+// 导入全局组件
+import subject from "./components/subjectcom.vue";
+import ent from "./components/ent";
+// 城市选择器
+import citycom from "./components/citycom";
+// 富文本
+import VueQuillEditor from 'vue-quill-editor'
+
+import 'quill/dist/quill.core.css' // import styles
+import 'quill/dist/quill.snow.css' // for snow theme
+import 'quill/dist/quill.bubble.css' // for bubble theme
+
+Vue.use(VueQuillEditor)
+// 全局注册
+Vue.component('subjectcom', subject)
+Vue.component('entcom', ent)
+Vue.component('citycom', citycom)
+
+
+
 // 防止同路由点击报错
 // const routerPush = VueRouter.prototype.push
 // VueRouter.prototype.push = function push(location) {

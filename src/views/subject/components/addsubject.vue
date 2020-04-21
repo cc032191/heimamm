@@ -38,7 +38,7 @@
 <script>
 import { addsuBject } from "../../../api/subject";
 export default {
-  data() {
+  data () {
     return {
       // 弹框开关
       centerDialogVisible: false,
@@ -57,7 +57,7 @@ export default {
     };
   },
   methods: {
-    addaffirm() {
+    addaffirm () {
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
           addsuBject(this.addsuBject).then(res => {
@@ -75,7 +75,7 @@ export default {
       });
     },
     // 表格关闭重置
-    closereset() {
+    closereset () {
       this.$refs.ruleForm.resetFields();
     }
   }

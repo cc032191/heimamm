@@ -54,13 +54,13 @@
 // 导入注册组件
 import register from "./components/register";
 // 导入登录方法
-import { loginindex } from "@/api/login.js";
+import { loginindex } from "../../api/login";
 // 导入校验的方法
-import { phonecode, password } from "@/utils/mycheck.js";
+import { phonecode, password } from "../../utils/mycheck";
 // 导入token方法
-import { setToken } from "@/utils/mytoken.js";
+import { setToken } from "../../utils/mytoken";
 export default {
-  data() {
+  data () {
     return {
       form: {
         // 手机号
@@ -117,12 +117,12 @@ export default {
   },
   methods: {
     // 更改验证码图片
-    changelogin() {
+    changelogin () {
       this.checkloginUrl =
         process.env.VUE_APP_URL + "/captcha?type=login&t=" + Date.now();
     },
     // 登录验证
-    register() {
+    register () {
       this.$refs.form.validate(valid => {
         if (valid) {
           loginindex({
@@ -130,7 +130,7 @@ export default {
             password: this.form.password,
             code: this.form.logincode
           }).then(res => {
-            window.console.log(res);
+            // window.console.log(res);
             if (res.data.code === 200) {
               setToken(res.data.data.token); //用自己封装的方法保存token
               this.$router.push("./home");
@@ -145,7 +145,7 @@ export default {
       });
     },
     // 打开注册页面
-    enroll() {
+    enroll () {
       this.$refs.register.dialogFormVisible = true;
     }
   }

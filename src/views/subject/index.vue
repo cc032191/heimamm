@@ -81,7 +81,7 @@ import { getsubjectlist, createstatus, removesuBject } from "../../api/subject";
 import addsubject from "./components/addsubject";
 import compile from "./components/compile";
 export default {
-  data() {
+  data () {
     return {
       formSubject: {
         rid: "",
@@ -104,11 +104,11 @@ export default {
     addsubject,
     compile
   },
-  created() {
+  created () {
     this.getlist();
   },
   methods: {
-    getlist() {
+    getlist () {
       getsubjectlist({
         page: this.pagenum, //第几页
         limit: this.pagesize, //每页多少条
@@ -130,11 +130,11 @@ export default {
       });
     },
     // 搜索
-    getList() {
+    getList () {
       this.getlist();
     },
     // 改变状态
-    changestate(id, status) {
+    changestate (id, status) {
       // window.console.log(id);
       createstatus({
         id,
@@ -152,16 +152,16 @@ export default {
       });
     },
     // 清除搜索框
-    cleardata() {
+    cleardata () {
       this.$refs.cleardata.resetFields();
     },
     // 新增学科
-    addsubject() {
+    addsubject () {
       // 打开弹框
       this.$refs.addsubject.centerDialogVisible = true;
     },
     // 编辑学科
-    compilesuBject(row) {
+    compilesuBject (row) {
       this.$refs.compile.centerDialogVisible = true;
       // 编辑的状态保存
       if (row.id !== this.$refs.compile.compilelist.id) {
@@ -170,7 +170,7 @@ export default {
       // window.console.log(row);
     },
     // 删除学科
-    removesubject(id) {
+    removesubject (id) {
       this.$confirm("你确定要删除吗?", "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -197,13 +197,13 @@ export default {
         });
     },
     // 每页多少条
-    handleSizeChange(newpagesize) {
+    handleSizeChange (newpagesize) {
       window.console.log(newpagesize);
       this.pagesize = newpagesize;
       this.getlist();
     },
     // 当前显示页码
-    handleCurrentChange(newpagenum) {
+    handleCurrentChange (newpagenum) {
       this.pagenum = newpagenum;
       this.getlist();
     }
